@@ -1,1 +1,20 @@
-<p>login works!</p>
+<form [formGroup]="formGroup" (ngSubmit)='onSubmit()'>
+
+  <mat-form-field>
+    <mat-label>e-mail</mat-label>
+    <input matInput type='email' name="email" formControlName="email" />
+    <mat-error><span>{{ getError('email')}}</span></mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput type= 'password' name="password" formControlName="password" />
+    <mat-error><p>
+      {{getError('password')}}
+    </p></mat-error>
+  </mat-form-field>
+
+
+  <button color="primary" mat-raised-button type="submit" [disabled]="formGroup.invalid">Login</button>
+</form>
+

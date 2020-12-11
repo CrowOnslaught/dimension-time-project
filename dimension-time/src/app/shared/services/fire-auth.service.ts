@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from  "@angular/fire/auth";
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { User } from '../models';
+import { User } from '../model/user';
 @Injectable({
   providedIn: 'root'
 })

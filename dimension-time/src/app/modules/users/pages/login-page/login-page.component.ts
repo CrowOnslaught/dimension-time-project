@@ -1,5 +1,8 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FireAuthService } from './../../../../shared/services/fire-auth.service';
+import { User } from './../../../../shared/model/user';
 import { Component, OnInit } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -10,19 +13,28 @@ export class LoginPageComponent implements OnInit {
 
   formGroup : FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private route: Router,private fireAuthService:FireAuthService) { }
 
   ngOnInit(): void {
     this.buildForm();
+
+  }
+
+  login(user:User){
+    console.log(user);
+    let response = this.fireAuthService.login(user);
+    response.then(data=>{
+      console.log("sadsadsad");
+      console.log(data);
+    }).catch((error)=>{
+      console.log(error);
+    });
+    //this.route.navigate(['/home']);
   }
 
   private buildForm(){
-    const dateLength = 10;
-    const today = new Date().toISOString().substring(0, dateLength);
-    const name = 'JOHN DOE';
     const minPassLength = 4;
     this.formGroup = this.fb.group({
-      registeredOn: today,
       email: ['', [
         Validators.required, Validators.email
       ]],

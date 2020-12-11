@@ -1,1 +1,35 @@
-<p>register works!</p>
+<form [formGroup]="formGroup" (ngSubmit)='registerFormSubmit()'>
+
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput name="name" formControlName="name" />
+    <mat-error><span>{{ getError('name')}}</span></mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>e-mail</mat-label>
+    <input matInput type='email' name="email" formControlName="email" />
+    <mat-error><span>{{ getError('email')}}</span></mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput type= 'password' name="password" formControlName="password" />
+    <mat-error><p>
+      {{getError('password')}}
+    </p></mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Confirm Password</mat-label>
+    <input matInput type= 'password' name="confirm_password" formControlName="confirm_password" />
+    <mat-error><p>
+      {{getError('confirm_password')}}
+    </p></mat-error>
+  </mat-form-field>
+
+  <button color="primary" mat-raised-button type="submit" [disabled]="formGroup.invalid">
+    Login
+  </button>
+
+</form>

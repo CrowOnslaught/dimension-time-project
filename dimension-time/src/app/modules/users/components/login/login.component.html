@@ -1,10 +1,11 @@
-<form [formGroup]="formGroup" (ngSubmit)='onSubmit()'>
+<form [formGroup]="formGroup" (ngSubmit)='loginFormSubmit()'>
 
   <mat-form-field>
     <mat-label>e-mail</mat-label>
     <input matInput type='email' name="email" formControlName="email" />
     <mat-error><span>{{ getError('email')}}</span></mat-error>
   </mat-form-field>
+  <mat-divider></mat-divider>
 
   <mat-form-field>
     <mat-label>Password</mat-label>
@@ -14,7 +15,8 @@
     </p></mat-error>
   </mat-form-field>
 
+  <button color="primary" mat-raised-button type="submit" [disabled]="formGroup.invalid">
+    Login
+  </button>
 
-  <button color="primary" mat-raised-button type="submit" [disabled]="formGroup.invalid">Login</button>
 </form>
-

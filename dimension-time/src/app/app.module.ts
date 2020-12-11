@@ -1,8 +1,6 @@
 import { environment } from './../environments/environment';
 import { HeaderModule } from './shared/components/header/header.module';
 import { HeroModule } from './shared/components/hero/hero.module';
-import { TasksModule } from './modules/tasks/tasks.module';
-import { UsersModule } from './modules/users/users.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -11,6 +9,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeModule } from './modules/home';
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,10 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     HomeModule,
     HeroModule,
-    HeaderModule
+    HeaderModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

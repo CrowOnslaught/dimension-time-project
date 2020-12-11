@@ -1,5 +1,8 @@
-import { FormGroup } from '@angular/forms';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { User } from './../../../../shared/model/user';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,16 +12,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class LoginComponent implements OnInit {
 
 
-  @Input() formGroup: FormGroup;
-  @Output() login = new EventEmitter();
-
-
+  @Input() formGroup : FormGroup;
+  @Output() login = new EventEmitter<User>();
   constructor() { }
 
   ngOnInit(): void {
+
   }
-  onSubmit(){
-    console.log('formulari', this.formGroup.value)
+
+  loginFormSubmit(){
     this.login.emit(this.formGroup.value);
     this.formGroup.reset();
   }
@@ -32,4 +34,5 @@ export class LoginComponent implements OnInit {
     }
     return error;
   }
+
 }

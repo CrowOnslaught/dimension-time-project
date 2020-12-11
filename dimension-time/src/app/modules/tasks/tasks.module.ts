@@ -13,6 +13,6 @@ import { TaskIndividualPageComponent } from './pages/task-individual-page/task-i
   imports: [
     CommonModule,
     TasksRoutingModule
-  ]
+  ],exports:[TaskGroupPageComponent,TaskGroupPageComponent]
 })
 export class TasksModule { }

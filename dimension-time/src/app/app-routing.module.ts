@@ -5,8 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {path:'home', component: HomePageComponent },
   {path:'', redirectTo:'home', pathMatch:'full' },
-  {path:'login',  loadChildren: () => import('./modules/users').then(m => m.UsersModule)},
-  {path:'register',  loadChildren: () => import('./modules/users').then(m => m.UsersModule)}
+  {path:'users',  loadChildren: () => import('./modules/users').then(m => m.UsersModule)},
+  {path:'tasks',  loadChildren: () => import('./modules/tasks').then(m => m.TasksModule)},
 ];
 
 @NgModule({

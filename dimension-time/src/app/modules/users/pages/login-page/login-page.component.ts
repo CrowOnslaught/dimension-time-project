@@ -37,8 +37,10 @@ export class LoginPageComponent implements OnInit {
     console.log(user);
     let response = this.fireAuthService.login(user);
     response.then(data=>{
-      console.log("sadsadsad");
-      console.log(data);
+      data.providerData.forEach(function (profile) {
+        console.log(profile.displayName);
+        localStorage.setItem("name",profile.displayName);
+      });
       this.openSnackBar("Loggin Successful","successful");
     }).catch((error)=>{
       this.openSnackBar("Register Error","error");

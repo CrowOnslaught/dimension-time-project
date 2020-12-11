@@ -11,15 +11,49 @@ export class FireAuthService {
 
   constructor(private afAuth: AngularFireAuth) {}
 
-  login(user:User) {
-    return this.afAuth.signInWithEmailAndPassword(user.email, user.password);
-}
+  async login(user:User) {
+    try {
+      await this.afAuth.signInWithEmailAndPassword(user.email, user.password);
+     return  await this.afAuth.currentUser;
+
+
+  //if (userfirebase != null) {
+    //console.log("------"+JSON.stringify(userfirebase))
+    //console.log("------"+userfirebase.uid)
+
+     /*userfirebase.providerData.forEach(function (profile) {
+      localStorage.setItem("name",profile.displayName);
+      console.log("Sign-in provider: " + profile.uid);
+      console.log("  Provider-specific UID: " + profile.uid);
+      console.log("  Name: " + profile.displayName);
+      console.log("  Email: " + profile.email);
+      console.log(profile)*/
+   // });
+
+
+    } catch (error) {
+      throw error;
+
+    }
+
+  }
   logout(){
     this.afAuth.signOut();
   }
 
-  register(user): Promise<any>{
-    return this.afAuth.createUserWithEmailAndPassword(user.email, user.password);
+  async register(user): Promise<any>{
+    try {
+      await this.afAuth.createUserWithEmailAndPassword(user.email, user.password);
+      const userfirebase= await this.afAuth.currentUser;
+
+      return userfirebase.updateProfile({displayName: user.name});
+
+    } catch (error) {
+      throw error;
+
+    }
+
+
   }
 
   isLogged$():Observable<any> {

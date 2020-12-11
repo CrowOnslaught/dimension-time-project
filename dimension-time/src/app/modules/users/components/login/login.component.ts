@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   loginFormSubmit(){
     this.login.emit(this.formGroup.value);
-    this.formGroup.reset();
+    //this.formGroup.reset();
   }
 
   public getError(controlName: string): string[] {

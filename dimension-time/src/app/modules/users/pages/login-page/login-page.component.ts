@@ -3,6 +3,7 @@ import { User } from './../../../../shared/model/user';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-page',
@@ -13,11 +14,23 @@ export class LoginPageComponent implements OnInit {
 
   formGroup : FormGroup;
 
-  constructor(private fb: FormBuilder,private route: Router,private fireAuthService:FireAuthService) { }
+  //snackBar
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  constructor(private fb: FormBuilder,private route: Router,private fireAuthService:FireAuthService,private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.buildForm();
 
+  }
+
+  openSnackBar(message: string, className: string){
+    this._snackBar.open(message, '', {
+      duration: 800,
+      panelClass: [className],
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+    });
   }
 
   login(user:User){
@@ -26,7 +39,9 @@ export class LoginPageComponent implements OnInit {
     response.then(data=>{
       console.log("sadsadsad");
       console.log(data);
+      this.openSnackBar("Loggin Successful","successful");
     }).catch((error)=>{
+      this.openSnackBar("Register Error","error");
       console.log(error);
     });
     //this.route.navigate(['/home']);

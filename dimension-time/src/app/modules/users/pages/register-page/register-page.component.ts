@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { rejects } from 'assert';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register-page',
@@ -13,16 +14,33 @@ export class RegisterPageComponent implements OnInit {
 
   formGroup: FormGroup;
 
-  constructor(private fb: FormBuilder,private route: Router,private fireAuthService: FireAuthService) { }
+  //snackBar
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  constructor(private fb: FormBuilder,private route: Router,private fireAuthService: FireAuthService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.buildForm();
   }
 
+  openSnackBar(message: string, className: string){
+    this._snackBar.open(message, '', {
+      duration: 800,
+      panelClass: [className],
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+    });
+  }
+
   register(user){
     //console.log(user);
     let response = this.fireAuthService.register(user);
-    response.then(data=>{console.log(data)}).catch((error) => {
+    response.then(data=>{
+      this.openSnackBar("Register Successful","successful");
+      console.log(data)})
+      .catch((error) => {
+        this.openSnackBar("Register Error","error");
 
     })
     //this.route.navigate(['/home']);

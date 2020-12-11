@@ -153,5 +153,8 @@
       }
     }
   },
-  "defaultProject": "dimension-time"
+  "defaultProject": "dimension-time",
+  "cli": {
+    "analytics": false
+  }
 }

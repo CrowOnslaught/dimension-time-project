@@ -57,6 +57,7 @@ export class FireAuthService {
   }
 
   isLogged$():Observable<any> {
+    console.log("ISLOGGED!");
     return this.afAuth.authState.pipe(first());
   }
 }

@@ -145,6 +145,10 @@
               "devServerTarget": "dimension-time:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }

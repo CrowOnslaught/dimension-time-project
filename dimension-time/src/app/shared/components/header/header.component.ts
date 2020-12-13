@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
               private logCom : LogComunicationService) { }
 
   ngOnInit(): void {
-    /*this.subscription=*/ this.logCom.isLogged$().subscribe(data =>
+    this.logCom.isLogged$().subscribe(data =>
       {
       console.log('header', data);
       this.isLogged = data;

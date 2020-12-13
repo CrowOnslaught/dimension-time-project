@@ -6,13 +6,15 @@ import { TaskIndividualComponent } from './components/task-individual/task-indiv
 import { TaskGroupComponent } from './components/task-group/task-group.component';
 import { TaskGroupPageComponent } from './pages/task-group-page/task-group-page.component';
 import { TaskIndividualPageComponent } from './pages/task-individual-page/task-individual-page.component';
+import { MaterialModule } from 'src/app/shared/material';
 
 
 @NgModule({
   declarations: [TaskIndividualComponent, TaskGroupComponent, TaskGroupPageComponent, TaskIndividualPageComponent],
   imports: [
     CommonModule,
-    TasksRoutingModule
+    TasksRoutingModule,
+    MaterialModule
   ],
   exports:[TaskGroupPageComponent,TaskGroupPageComponent]
 })

@@ -3,8 +3,8 @@
   <div class='buttons'>
     <button color='accent' mat-raised-button *ngIf="!isLogged" routerLink="/users/login"> LOGIN</button>
     <button color='accent' mat-raised-button *ngIf="!isLogged" routerLink="/users/register"> REGISTER</button>
-    <button color='accent' mat-raised-button *ngIf="isLogged" (click)='click()'> SELF TASKS</button>
-    <button color='accent' mat-raised-button *ngIf="isLogged" (click)='click()'> GROUP TASKS</button>
+    <button color='accent' mat-raised-button *ngIf="isLogged" routerLink="/tasks/individual"> SELF TASKS</button>
+    <button color='accent' mat-raised-button *ngIf="isLogged" routerLink="/tasks/group"> GROUP TASKS</button>
     <button color='accent' mat-raised-button *ngIf="isLogged" (click)='logOut()'> LOGOUT</button>
   </div>
 </mat-toolbar>

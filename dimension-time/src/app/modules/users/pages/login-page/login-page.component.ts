@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { LogComunicationService } from 'src/app/shared/services/log-comunication.service';
 
 @Component({
   selector: 'app-login-page',
@@ -17,7 +18,7 @@ export class LoginPageComponent implements OnInit {
   //snackBar
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  constructor(private fb: FormBuilder,private route: Router,private fireAuthService:FireAuthService,private _snackBar: MatSnackBar) { }
+  constructor(private fb: FormBuilder,private route: Router,private fireAuthService:FireAuthService,private _snackBar: MatSnackBar, private logCom : LogComunicationService) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -37,16 +38,17 @@ export class LoginPageComponent implements OnInit {
     console.log(user);
     let response = this.fireAuthService.login(user);
     response.then(data=>{
+      this.logCom.logIn(true);
       data.providerData.forEach(function (profile) {
         console.log(profile.displayName);
         localStorage.setItem("name",profile.displayName);
       });
       this.openSnackBar("Loggin Successful","successful");
+      this.route.navigate(['/home'])
     }).catch((error)=>{
       this.openSnackBar("Register Error","error");
       console.log(error);
     });
-    //this.route.navigate(['/home']);
   }
 
   private buildForm(){

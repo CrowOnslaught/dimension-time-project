@@ -6,7 +6,7 @@
   <button mat-raised-button>Add Task</button>
 </div>
 
-<mat-card *ngFor="let t of tasks" class='task' (click)='openModal(t)'>
+<mat-card *ngFor="let t of tasks" class='task' [ngClass]="{'active': t.timeStart!=''}" (click)='openModal(t)'>
   <mat-card-header>
     <mat-card-title>{{t.name}}<span>{{t.duration}}h</span></mat-card-title>
   </mat-card-header>

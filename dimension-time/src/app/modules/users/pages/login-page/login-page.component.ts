@@ -27,7 +27,7 @@ export class LoginPageComponent implements OnInit {
 
   openSnackBar(message: string, className: string){
     this._snackBar.open(message, '', {
-      duration: 800,
+      duration: 1000,
       panelClass: [className],
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,

@@ -1,8 +1,6 @@
-div.mat-card-header-text {
-  border: red solid 2px !important;
-  margin: 0 0;
+mat-card::ng-deep.mat-card-header-text {
+  margin-left: 0;
 }
-
 
 .task
 {
@@ -10,26 +8,18 @@ div.mat-card-header-text {
   margin:20px;
   width: fit-content;
 
+  &:hover
+  {
+    background-color: lightgray;
+  }
 
-  .mat-card-header
+  mat-card-title
   {
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    .mat-card-header-text
+    >span
     {
-      margin-left:0;
-    }
-    text-align: left;
-    >mat-card-title
-    {
-      >span
-      {
-        margin-left: 50px;
-        font-weight: normal;
-      }
+      margin-left: 50px;
+      font-weight: normal;
     }
   }
 }

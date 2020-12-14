@@ -1,0 +1,28 @@
+<form mat-dialog-content [formGroup]="formGroup">
+
+
+
+  <mat-form-field>
+    <input type='hidden' formControlName ="userTaskId">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+  <mat-divider></mat-divider>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description">
+  </mat-form-field>
+  <mat-divider></mat-divider>
+  <mat-form-field>
+    <mat-label>Start Time</mat-label>
+    <input matInput type="time" formControlName='timeStart'>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>End Time</mat-label>
+    <input matInput type="time" formControlName='timeEnd'>
+  </mat-form-field>
+</form>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Close</button>
+  <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions>

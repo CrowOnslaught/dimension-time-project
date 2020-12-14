@@ -89,9 +89,13 @@ export class FireTaskService {
                 const l_taskQuery = this.afs.collectionGroup('task', ref => ref.where('id', '==', l_ut.taskId))
                 .valueChanges().subscribe(d =>
                   {
-                    let l_task = d as Task[];
+                    let l_tasks = d as Task[];
 
-                    taskArray.push(l_task[0]);
+                    let l_task = l_tasks[0];
+
+                    l_task= Object.assign(l_ut,l_task);
+
+                    taskArray.push(l_task);
                     l_taskQuery.unsubscribe();
                   })
 
@@ -100,7 +104,7 @@ export class FireTaskService {
               }
             })
         });
-        return [userTaskArray, taskArray];
+        return taskArray;
   }
 
   getTaskById$(id): Observable < Task > {

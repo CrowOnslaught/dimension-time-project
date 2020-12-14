@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Task } from 'src/app/shared/model/task';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UserTask } from 'src/app/shared/model/user-task';
 import { FireTaskService } from 'src/app/shared/services/fire-task.service';
+import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 
 @Component({
   selector: 'app-task-individual',
@@ -11,9 +13,9 @@ import { FireTaskService } from 'src/app/shared/services/fire-task.service';
 export class TaskIndividualComponent implements OnInit {
 
   userTasks: UserTask[] = [];
-  tasks: Task[] = [];
+  tasks: any[] = [];
 
-  constructor(private fTask: FireTaskService) { }
+  constructor(private fb : FormBuilder, private fTask: FireTaskService, private dialog: MatDialog) { }
 
   ngOnInit(): void
   {
@@ -22,15 +24,40 @@ export class TaskIndividualComponent implements OnInit {
 
   getTasks()
   {
-    let l_result = this.fTask.readTasks();
-
-    this.userTasks = l_result[0];
-    this.tasks = l_result[1];
-
+    this.tasks = this.fTask.readTasks();
   }
 
-  getTasksInfo()
+  createForm(data):FormGroup{
+    return  this.fb.group({
+      userTaskId:[data.taskId,Validators.required],
+      name:[{value:data.name, disabled:true},Validators.required],
+      description:[{value:data.description, disabled:true},Validators.required],
+      timeStart:[data.timeStart,Validators.required],
+      timeEnd:[data.timeEnd,Validators.required]
+    });
+  }
+
+
+  openModal(data)
   {
+    const dialogConfig =new MatDialogConfig();
+
+    // this.formGroup.setValue(item);
+    // dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = this.createForm(data);
+
+
+    const dialogRef = this.dialog.open(TaskDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data=> this.closeModal(data))
+    }
+
+  closeModal(data)
+  {
+    console.log(data);
   }
 
 }

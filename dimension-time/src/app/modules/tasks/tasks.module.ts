@@ -9,14 +9,17 @@ import { TaskIndividualPageComponent } from './pages/task-individual-page/task-i
 import { MaterialModule } from 'src/app/shared/material';
 
 import { GetUserTaskByIdPipe } from 'src/app/shared/pipes/get-user-task-by-id.pipe';
+import { TaskDialogComponent } from './components/task-dialog/task-dialog.component';
+import {  ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [GetUserTaskByIdPipe, TaskIndividualComponent, TaskGroupComponent, TaskGroupPageComponent, TaskIndividualPageComponent],
+  declarations: [GetUserTaskByIdPipe, TaskIndividualComponent, TaskGroupComponent, TaskGroupPageComponent, TaskIndividualPageComponent, TaskDialogComponent],
   imports: [
     CommonModule,
     TasksRoutingModule,
     MaterialModule,
+    ReactiveFormsModule
   ],
   exports:[TaskGroupPageComponent,TaskGroupPageComponent]
 })

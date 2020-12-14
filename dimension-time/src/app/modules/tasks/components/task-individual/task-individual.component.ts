@@ -10,31 +10,27 @@ import { FireTaskService } from 'src/app/shared/services/fire-task.service';
 })
 export class TaskIndividualComponent implements OnInit {
 
-  userTasks: UserTask[] = []
-  tasks: Task[] = []
+  userTasks: UserTask[] = [];
+  tasks: Task[] = [];
 
   constructor(private fTask: FireTaskService) { }
 
   ngOnInit(): void
   {
-    console.log("AQUI");
-    this.tasks = this.fTask.readTasks$();
-    console.log("tasks" + this.tasks);
+    this.getTasks();
   }
 
   getTasks()
   {
-    //llenar userTaks from fb
+    let l_result = this.fTask.readTasks();
+
+    this.userTasks = l_result[0];
+    this.tasks = l_result[1];
+
   }
 
   getTasksInfo()
   {
-    for(let t of this.userTasks)
-    {
-      let l_taskID = t.taskId;
-      //Leer task con esa ID de fb
-      //añadir a tasks
-    }
   }
 
 }

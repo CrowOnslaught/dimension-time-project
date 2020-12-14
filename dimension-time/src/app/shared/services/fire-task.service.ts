@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, Subject } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
+import { TasksModule } from 'src/app/modules/tasks';
 import { Task } from '../model/task';
 import { UserTask } from '../model/user-task';
 
@@ -11,92 +12,103 @@ import { UserTask } from '../model/user-task';
 })
 export class FireTaskService {
 
-  constructor(private afs : AngularFirestore, private afAuth: AngularFireAuth) { }
+  constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth) { }
 
-  readUserTasks$():Observable<UserTask[]>{
+  readUserTasks$(): Observable<UserTask[]> {
     return this.afs.collection<UserTask>('user_task').valueChanges();
   }
-  readTasks$() : Observable <Task[]>
+  // async readUserTasks() : Promise<UserTask[]>
+  // {
+  //   let emailID;
+  //   let l_userTask;
+
+  //   await this.afAuth.currentUser.then(data =>
+  //     {
+  //       if (data != null) {
+  //         data.providerData.forEach(function (profile) {
+  //           emailID = profile.email;
+  //         });
+  //       }
+  //       else
+  //         return;
+
+  //       this.afs.collectionGroup('user_task', ref => ref.where('userId', '==', emailID))
+  //         .valueChanges().subscribe(data =>
+  //           {
+  //             l_userTask = data as UserTask[];
+  //           });
+  //           return l_userTask;
+  //         });
+
+  // }
+  // readTasks() : Task[]
+  // {
+  //   let taskArray: Task[];
+
+  //   let l_userTask = this.readUserTasks();
+
+  //   for (let i = 0; i < l_userTask.length; i++)
+  //   {
+  //     const l_ut = l_userTask[i];
+  //     const l_taskQuery = this.afs.collectionGroup('task', ref => ref.where('id', '==', l_ut.taskId))
+  //       .valueChanges().subscribe(d =>
+  //       {
+  //         let l_task = d as Task[];
+  //         taskArray.push(l_task[0]);
+  //         l_taskQuery.unsubscribe();
+  //       })
+  //   }
+  //   console.log(taskArray);
+  //   return taskArray;
+  // }
+  readTasks() :any[]
   {
-    // let taskArray: Task[] = [];
-
-    // const taskID$ = new Subject<string>();
-    // const queryObservable2 = taskID$.pipe(
-    //   switchMap(taskID =>
-    //     this.afs.collection('task', ref => ref.where('id', '==', taskID)).valueChanges()
-    //   ));
-
-    // queryObservable2.subscribe(queriedItems2 =>
-    //   {
-    //     let l_task = queriedItems2[0] as Task;
-    //     console.log("AA" + l_task);
-    //     taskArray.push(l_task);
-    //     // console.log("CCCC" + taskArray);
-    //   })
-
-    // const emailID$ = new Subject<string>();
-    // const queryObservable = emailID$.pipe(
-    //   switchMap(emailID =>
-    //     this.afs.collection('user_task', ref => ref.where('userId', '==', emailID)).valueChanges()
-    //   )
-    // );
-
-    // this.afAuth.currentUser.then(data =>
-    //   {
-    //     if(data != null)
-    //       data.providerData.forEach(function (profile) {
-    //         emailID$.next(profile.email);
-    //       });
-    //   });
-
-    //   let l_userTask;
-    //   queryObservable.subscribe(queriedItems =>
-    //     {
-    //       l_userTask = queriedItems as UserTask[];
-    //       for (let ut of l_userTask)
-    //       {
-    //         console.log("BBBBBB " + ut.taskId);
-    //         taskID$.next(ut.taskId);
-    //       }
-    //     });
-
-
-    //   console.log(taskArray);
-    //   return taskArray;
-
     let emailID;
-    console.log("DDDD");
+    let userTaskArray: UserTask[] = [];
+    let taskArray: Task[] = [];
 
     this.afAuth.currentUser.then(data =>
       {
         if(data != null)
+        {
           data.providerData.forEach(function (profile) {
             emailID = profile.email;
           });
-          console.log("CCCCCC");
+        }
+        else
+          return;
 
-          const l_userTaskQuery = this.afs.collectionGroup('user_task', ref => ref.where('userId', '==', emailID))
-          .valueChanges();
-
-          l_userTaskQuery.subscribe(data =>
+          this.afs.collectionGroup('user_task', ref => ref.where('userId', '==', emailID))
+          .valueChanges().subscribe(data =>
             {
-              let l_userTask = data as UserTask[];
-              console.log("AA data " +data);
-              console.log("BB userTask " + l_userTask);
-              const l_taskQuery = this.afs.collectionGroup('task', ref => ref.where('id', '==', emailID))
-              .valueChanges();
+              let l_userTaskArray = data as UserTask[];
+
+              for (let i =0; i< l_userTaskArray.length; i++)
+              {
+                const l_ut = l_userTaskArray[i];
+                const l_taskQuery = this.afs.collectionGroup('task', ref => ref.where('id', '==', l_ut.taskId))
+                .valueChanges().subscribe(d =>
+                  {
+                    let l_task = d as Task[];
+
+                    taskArray.push(l_task[0]);
+                    l_taskQuery.unsubscribe();
+                  })
+
+                  userTaskArray.push(l_ut);
+                  console.log(userTaskArray)
+              }
             })
-      });
-
-      return null;
+        });
+        return [userTaskArray, taskArray];
   }
 
-  getTaskById$(id):Observable<Task>{
-    return this.afs.collection<Task>('users').doc(id).valueChanges().pipe(first());
-  }
+  getTaskById$(id): Observable < Task > {
+      return this.afs.collection<Task>('users').doc(id).valueChanges().pipe(first());
+    }
 
 
-  update(user:UserTask): Promise<void>{
-    return this.afs.collection<UserTask>('users').doc(user.id).update(user);
-  }
+  update(user: UserTask): Promise < void> {
+      return this.afs.collection<UserTask>('users').doc(user.id).update(user);
+    }
 }

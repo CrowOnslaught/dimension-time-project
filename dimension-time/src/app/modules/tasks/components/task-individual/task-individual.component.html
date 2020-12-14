@@ -1,10 +1,16 @@
 <div>
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput type='text' name="Filter"/>
+    <input matInput type='text' name="Filter" />
   </mat-form-field>
-  <button>Add Task</button>
+  <button mat-raised-button>Add Task</button>
 </div>
-<div *ngFor="let t of userTasks" class='task'>
-  <h1>aaaaa</h1>
-</div>
+
+<mat-card *ngFor="let t of tasks" class='task'>
+  <mat-card-header>
+    <mat-card-title>{{t.name}}<span>{{userTasks | getUserTaskById : t.id : userTasks |json}}h</span></mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{t.description}}</p>
+  </mat-card-content>
+</mat-card>

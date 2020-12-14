@@ -17,8 +17,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.logCom.isLogged$().subscribe(data =>
-      {
-      console.log('header', data);
+    {
       this.isLogged = data;
     });
   }
@@ -31,6 +30,7 @@ export class HeaderComponent implements OnInit {
   logOut()
   {
     this.logCom.logIn(false);
+    this.fAuth.logout();
   }
 
   // ngOnDestroy():void{

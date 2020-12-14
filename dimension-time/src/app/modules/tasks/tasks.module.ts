@@ -8,13 +8,15 @@ import { TaskGroupPageComponent } from './pages/task-group-page/task-group-page.
 import { TaskIndividualPageComponent } from './pages/task-individual-page/task-individual-page.component';
 import { MaterialModule } from 'src/app/shared/material';
 
+import { GetUserTaskByIdPipe } from 'src/app/shared/pipes/get-user-task-by-id.pipe';
+
 
 @NgModule({
-  declarations: [TaskIndividualComponent, TaskGroupComponent, TaskGroupPageComponent, TaskIndividualPageComponent],
+  declarations: [GetUserTaskByIdPipe, TaskIndividualComponent, TaskGroupComponent, TaskGroupPageComponent, TaskIndividualPageComponent],
   imports: [
     CommonModule,
     TasksRoutingModule,
-    MaterialModule
+    MaterialModule,
   ],
   exports:[TaskGroupPageComponent,TaskGroupPageComponent]
 })

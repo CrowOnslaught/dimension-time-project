@@ -1,0 +1,35 @@
+div.mat-card-header-text {
+  border: red solid 2px !important;
+  margin: 0 0;
+}
+
+
+.task
+{
+  border: lightblue solid 3px;
+  margin:20px;
+  width: fit-content;
+
+
+  .mat-card-header
+  {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .mat-card-header-text
+    {
+      margin-left:0;
+    }
+    text-align: left;
+    >mat-card-title
+    {
+      >span
+      {
+        margin-left: 50px;
+        font-weight: normal;
+      }
+    }
+  }
+}

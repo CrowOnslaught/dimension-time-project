@@ -17,6 +17,12 @@ export class TaskGroupComponent implements OnInit {
   ngOnInit(): void
   {
     let l_tasks = [];
+    console.log("group");
+
+    this.fTask.readTasksGroup().then(data=>{
+      console.log("group1"+JSON.stringify(data));
+    });
+      /*
     this.fTask.readTasksGroup().then(data=>{
       l_tasks = data;
       console.log(l_tasks);
@@ -37,7 +43,7 @@ export class TaskGroupComponent implements OnInit {
           this.allTasks[l_index].duration += t.duration;
         }
       }
-    });
+    });*/
   }
 
 

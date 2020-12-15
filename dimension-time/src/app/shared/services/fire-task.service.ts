@@ -66,20 +66,35 @@ export class FireTaskService {
     let emailID;
     let userTaskArray: UserTask[] = [];
     let taskArray: Task[] = [];
-
+    console.log("enmo1");
     try
     {
+      console.log("enmo2");
+
       let l_user = await this.afAuth.currentUser;
       if(l_user != null)
       {
-        const l_user_taskQuery = await this.afs.collectionGroup('user_task', (ref) =>
+        console.log("enmo3");
+
+        const l_user_taskQuery:UserTask[] = await this.afs.collectionGroup<UserTask>('user_task', (ref) =>
           ref.where('duration', '!=', "00:00")).valueChanges().toPromise();
 
-        const l_taskQuery = await this.afs.collectionGroup('task').valueChanges().toPromise();
+          console.log("enmo4");
+
+        const l_taskQuery:Task[] = await this.afs.collection<Task>('task').valueChanges().toPromise();
+
+        console.log("enmo5");
+
+        let tasks = l_user_taskQuery.filter(data => l_taskQuery.find(d=> d.id==data.taskId).id == data.taskId);
+        console.log("filter:"+ tasks);
+        console.log("enmo6");
+
       }
     }
     catch(e)
     {
+      console.log("enmoError");
+
       console.log(e);
     }
     await this.afAuth.currentUser.then((data) => {

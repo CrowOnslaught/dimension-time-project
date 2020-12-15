@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from  "@angular/fire/auth";
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { User } from '../model/user';
@@ -9,7 +10,7 @@ import { User } from '../model/user';
 export class FireAuthService {
 
 
-  constructor(private afAuth: AngularFireAuth) {}
+  constructor(private afAuth: AngularFireAuth,private route:Router) {}
 
   async login(user:User) {
     try {
@@ -39,6 +40,9 @@ export class FireAuthService {
   }
   logout(){
     this.afAuth.signOut();
+    this.route.navigate(['/home']);
+
+
   }
 
   async register(user): Promise<any>{

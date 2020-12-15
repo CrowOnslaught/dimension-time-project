@@ -86,6 +86,17 @@ export class FireTaskService {
 
   }
 
+
+readTasks():Observable<any[]>{
+  let emailId = localStorage.getItem("email");
+console.log("email: "+emailId);
+    return this.afs.collectionGroup('user_task', (ref) =>ref.where('userId', '==', emailId)).valueChanges();
+}
+
+
+
+
+  /*
   async readTasks(): Promise<any[]> {
     let emailID;
     let userTaskArray: UserTask[] = [];
@@ -132,7 +143,7 @@ export class FireTaskService {
         });
     });
     return taskArray;
-  }
+  }*/
 
   getTaskById$(id): Observable<Task> {
     return this.afs

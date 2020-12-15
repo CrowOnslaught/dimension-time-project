@@ -5,43 +5,50 @@ import { isArray } from 'util';
 @Component({
   selector: 'app-task-group',
   templateUrl: './task-group.component.html',
-  styleUrls: ['./task-group.component.scss']
+  styleUrls: ['./task-group.component.scss'],
 })
 export class TaskGroupComponent implements OnInit {
-
   allTasks: any[] = [];
 
+  constructor(private fTask: FireTaskService) {}
 
-  constructor(private fTask : FireTaskService) { }
+  ngOnInit(): void {
+    this.fTask.readTasksGroup().subscribe((data) => {
+      this.fTask.readSubTask().subscribe((d) => {
+        console.log('data:' + JSON.stringify(data));
+        this.allTasks = [];
+        let tasks = data;
+        //let tasks = data.filter(dataT => d.find(dT=> dT.id==dataT.taskId).id == dataT.taskId);
+        for (let i = 0; i < tasks.length; i++) {
+          let t = tasks[i];
 
-  ngOnInit(): void
-  {
-    console.log("aaaaaaa");
-    this.fTask.readTasksGroup().subscribe(data=>{
-      this.fTask.readSubTask().subscribe(d=>{
-        this.allTasks=[]
-        console.log(d)
-        let tasks = data.filter(dataT => d.find(dT=> dT.id==dataT.taskId).id == dataT.taskId);
-console.log(tasks)
-        for (let i=0; i< tasks.length; i++)
-        {
-          console.log("aaaaaa");
-          let t = data[i];
-          let task= d.find(taskFilter=> tasks.find(tasksFind=>tasksFind.id == taskFilter.taskId));
+          let obj = d.find((dFind) => tasks[i].taskId == dFind.id);
+
+          t = Object.assign(t, obj);
+          let l_index= this.allTasks.findIndex(alltaskFind=>alltaskFind.id == t.id);
+
+          if (l_index == -1) this.allTasks.push(t);
+          else {
+            this.allTasks[l_index].duration = this.transformString(
+              this.calculateTime(this.allTasks[l_index].duration, t.duration)
+            );
+          }
+          /* let t = data[i];
+          let task= d.find(taskFilter=> data[i].taskId ==taskFilter.id);
           t= Object.assign(t,task);
           console.log("t:"+ JSON.stringify(t))
           let l_index= this.allTasks.findIndex(alltaskFind=>alltaskFind.id == t.id);
+          console.log("l_index:"+ JSON.stringify(l_index))
           if( l_index == -1)
             this.allTasks.push(t);
           else
           {
             this.allTasks[l_index].duration = this.transformString(this.calculateTime(this.allTasks[l_index].duration,t.duration));
-          }
+          }*/
         }
-
-      })
+      });
     });
-      /*
+    /*
     this.fTask.readTasksGroup().then(data=>{
       l_tasks = data;
       console.log(l_tasks);
@@ -65,70 +72,81 @@ console.log(tasks)
     });*/
   }
 
-  calculateTime(data,task){
-    let splitaStart = data.split(":");
-    let splitEnd = task.split(":");
+  calculateTime(data, task) {
+    let splitaStart = data.split(':');
+    let splitEnd = task.split(':');
 
-    let objMinuteStart = {hour: splitaStart[0],minute:splitaStart[1],second: 0};
-    let objMinuteEnd = {hour: splitEnd[0],minute:splitEnd[1],second: 0};
+    let objMinuteStart = {
+      hour: splitaStart[0],
+      minute: splitaStart[1],
+      second: 0,
+    };
+    let objMinuteEnd = { hour: splitEnd[0], minute: splitEnd[1], second: 0 };
 
-console.log("data: "+splitaStart)
-console.log("data: "+splitEnd[0])
-
-    let timeCompare = this.compareHours(objMinuteStart,objMinuteEnd);
-    console.log("timeCompare: "+timeCompare)
+    let timeCompare = this.compareHours(objMinuteStart, objMinuteEnd);
 
     return timeCompare;
   }
-  compareHours(objMinuteStart,objMinuteEnd){
+  compareHours(objMinuteStart, objMinuteEnd) {
     let result;
     let resultTime;
     let date = new Date();
 
-    let  objDateStart=new Date(2020+'-'+ 1 +"-"+1+" "+objMinuteStart.hour +":" + objMinuteStart.minute + ":" + objMinuteStart.second + ".000Z");
-    let  objDateEnd=new Date(2020+'-'+ 1 +"-"+1+" "+objMinuteEnd.hour +":" + objMinuteEnd.minute + ":" + objMinuteEnd.second + ".000Z");
+    let objDateStart = new Date(
+      2020 +
+        '-' +
+        1 +
+        '-' +
+        1 +
+        ' ' +
+        objMinuteStart.hour +
+        ':' +
+        objMinuteStart.minute +
+        ':' +
+        objMinuteStart.second +
+        '.000Z'
+    );
+    let objDateEnd = new Date(
+      2020 +
+        '-' +
+        1 +
+        '-' +
+        1 +
+        ' ' +
+        objMinuteEnd.hour +
+        ':' +
+        objMinuteEnd.minute +
+        ':' +
+        objMinuteEnd.second +
+        '.000Z'
+    );
     objDateStart.setHours(objDateStart.getHours());
     objDateEnd.setHours(objDateEnd.getHours());
 
-        //restar
-        resultTime =objDateEnd.getTime()+ objDateStart.getTime();
-        date.setTime(resultTime);
-        console.log("date: "+date)
+    //restar
+    resultTime = objDateEnd.getTime() + objDateStart.getTime();
+    date.setTime(resultTime);
 
+    date.setHours(date.getHours() - 1);
 
-
-    date.setHours(date.getHours()-1);
-    console.log("date.getHours()-1: "+date.getHours())
-
-    result = date.getHours()+":"+date.getMinutes()
-    console.log("result: "+result)
-    return  result;
- }
- transformString(data){
-  let dataTime = data.split(":");
-
-  let resultHours = Number(dataTime[0]);
-  let resultMinutes = Number(dataTime[1]);
-  let  result;
-  if(resultHours<10 && resultMinutes>=10){
-    result = "0"+resultHours+":"+resultMinutes;
-
-  }else if(resultHours>=10 && resultMinutes<10){
-    result = resultHours+":0"+resultMinutes;
-
-  }else if(resultHours<10 && resultMinutes<10){
-    result = "0"+resultHours+":0"+resultMinutes;
-
-  }else{
-    result = resultHours+":"+resultMinutes;
-
+    result = date.getHours() + ':' + date.getMinutes();
+    return result;
   }
-  return result;
-}
+  transformString(data) {
+    let dataTime = data.split(':');
 
-
-
-
-
-
+    let resultHours = Number(dataTime[0]);
+    let resultMinutes = Number(dataTime[1]);
+    let result;
+    if (resultHours < 10 && resultMinutes >= 10) {
+      result = '0' + resultHours + ':' + resultMinutes;
+    } else if (resultHours >= 10 && resultMinutes < 10) {
+      result = resultHours + ':0' + resultMinutes;
+    } else if (resultHours < 10 && resultMinutes < 10) {
+      result = '0' + resultHours + ':0' + resultMinutes;
+    } else {
+      result = resultHours + ':' + resultMinutes;
+    }
+    return result;
+  }
 }

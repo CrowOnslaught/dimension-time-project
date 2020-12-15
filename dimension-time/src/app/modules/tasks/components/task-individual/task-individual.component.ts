@@ -80,6 +80,45 @@ export class TaskIndividualComponent implements OnInit {
   }
   getTasksByUser()
   {
+    this.fTask.readTasks().subscribe(data=>{
+      console.log("readTasks:"+ JSON.stringify(data))
+      this.fTask.readSubTask().subscribe(d=>{
+        this.tasksByUser=[]
+        let tasks = data;
+        for (let i=0; i< tasks.length; i++)
+        {
+          let t = tasks[i]
+          console.log("d:"+ JSON.stringify(d))
+          console.log("tasks:"+ JSON.stringify(tasks))
+
+
+          let obj = d.find(dFind=> tasks[i].taskId == dFind.id  )
+          console.log("obj:"+ JSON.stringify(obj))
+
+          t= Object.assign(t,obj);
+
+          this.tasksByUser.push(t);
+
+         /* let t = data[i];
+          console.log("t:"+ JSON.stringify(t))
+
+          let task= d.find(taskFilter=> tasks.find(tasksFind=>tasksFind.taskId == taskFilter.taskId));
+          console.log("find:"+ JSON.stringify(task))
+
+          t= Object.assign(t,task);
+          console.log("t1:"+ JSON.stringify(t))
+          let l_index= this.tasksByUser.findIndex(alltaskFind=>alltaskFind.id == t.id);
+
+          if( l_index == -1)
+            this.tasksByUser.push(t);
+          else
+          {
+           // this.tasksByUser[l_index].duration = this.transformString(this.calculateTime(this.tasksByUser[l_index].duration,t.tasksByUser));
+          }*/
+        }
+      })
+    });
+    /*
     this.fTask.readTasks().then(data=>{
       console.log("logggg: "+data)
       this.tasksByUser = data;
@@ -87,7 +126,7 @@ export class TaskIndividualComponent implements OnInit {
       console.log("logggg2: "+ this.tasksByUser)
 
       this.getTask();
-    });
+    });*/
 
   }
 

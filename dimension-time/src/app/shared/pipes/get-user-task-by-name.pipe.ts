@@ -10,9 +10,21 @@ export class GetUserTaskByNamePipe implements PipeTransform {
 
   transform( v1 : any[], v2 : string): any[] {
 
-    if (v2 == '')
-      return v1;
-    else
-      return v1.filter(t => t.name.indexOf(v2) != -1);
-  }
+
+    v1 = v1.filter(t =>{
+        let nameValid = false;
+
+        if (v2 && v2 != "") {
+        if (t.name.toLowerCase().indexOf(v2.toLowerCase()) != -1) {
+          nameValid = true;
+        }
+
+      } else {
+        nameValid = true;
+      }
+      return nameValid;
+    });
+
+    return v1;
+}
 }

@@ -42,6 +42,7 @@ export class LoginPageComponent implements OnInit {
       data.providerData.forEach(function (profile) {
         console.log(profile.displayName);
         localStorage.setItem("name",profile.displayName);
+        localStorage.setItem("email",profile.email);
       });
       this.openSnackBar("Loggin Successful","successful");
       this.route.navigate(['/home'])

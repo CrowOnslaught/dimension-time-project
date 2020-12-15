@@ -142,6 +142,7 @@ export class TaskIndividualComponent implements OnInit {
 
   openModal(data)
   {
+    console.log("opendModal: "+JSON.stringify(data))
     this.getTask();
     for (let index = 0; index < this.tasksByUser.length; index++) {
       if(data.id != this.tasksByUser[index].id && this.tasksByUser[index].timeStart != ""){
@@ -149,7 +150,7 @@ export class TaskIndividualComponent implements OnInit {
         return
       }
     }
-
+    console.log("opendModal1: "+JSON.stringify(data))
     const dialogConfig = new MatDialogConfig();
 
     // this.formGroup.setValue(item);
@@ -167,6 +168,8 @@ export class TaskIndividualComponent implements OnInit {
 
   closeModal(data)
   {
+    console.log("closeModal: "+JSON.stringify(data))
+
     if(data!=null || data!=undefined){
       if(data.timeStart !="" && data.timeEnd=="")
       {
@@ -192,7 +195,7 @@ export class TaskIndividualComponent implements OnInit {
     return userTask
   }
   updateTime(data,flag){
-    let objFind = this.tasksByUser.find(data=> data.userTaskId == data.userTaskId);
+    let objFind = this.tasksByUser.find(d=> d.userTaskId == data.userTaskId);
     let userTaskObj;
 
     switch(flag){
@@ -209,7 +212,10 @@ export class TaskIndividualComponent implements OnInit {
 
         break;
       case "update":
+
         userTaskObj = this.createUserTask(objFind,data);
+        console.log("update: "+JSON.stringify(userTaskObj))
+
         this.update(userTaskObj);
         break;
     }
@@ -217,6 +223,8 @@ export class TaskIndividualComponent implements OnInit {
   }
 
   update(data){
+    console.log("update: "+JSON.stringify(data))
+
 
     this.fTask.update(data)
     .then(data=>{
@@ -231,7 +239,20 @@ export class TaskIndividualComponent implements OnInit {
 
     let resultHours = Number(durationTime[0])+Number(dataTime[0]);
     let resultMinutes = Number(durationTime[1])+Number(dataTime[1]);
-    let  result = resultHours+":"+resultMinutes;
+    let  result;
+    if(resultHours<10 && resultMinutes>=10){
+      result = "0"+resultHours+":"+resultMinutes;
+
+    }else if(resultHours>=10 && resultMinutes<10){
+      result = resultHours+":0"+resultMinutes;
+
+    }else if(resultHours<10 && resultMinutes<10){
+      result = "0"+resultHours+":0"+resultMinutes;
+
+    }else{
+      result = resultHours+":"+resultMinutes;
+
+    }
     return result;
   }
 
@@ -285,6 +306,7 @@ export class TaskIndividualComponent implements OnInit {
    // this.formGroup.setValue(item);
    // dialogConfig.disableClose = true;
    dialogConfig.autoFocus = true;
+
 
    dialogConfig.data = this.createFormAdd(tasks);
 

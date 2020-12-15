@@ -175,7 +175,7 @@ export class FireTaskService {
       userId:"jaume.garcia@student.bit.es"
 
     }*/
-    console.log(userTask);
+    console.log("updateService: "+JSON.stringify(userTask))
     /*let itemDoc = this.afs.doc(`user_task/${userTask1.userTaskId}`)
    itemDoc.update(userTask1);*/
     return this.afs

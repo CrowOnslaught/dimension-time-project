@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, Subject } from 'rxjs';
-import { first, switchMap } from 'rxjs/operators';
+import { catchError, first, switchMap } from 'rxjs/operators';
 import { TasksModule } from 'src/app/modules/tasks';
 import { Task } from '../model/task';
 

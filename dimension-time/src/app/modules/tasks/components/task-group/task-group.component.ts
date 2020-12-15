@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FireTaskService } from 'src/app/shared/services/fire-task.service';
 
 @Component({
   selector: 'app-task-group',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskGroupComponent implements OnInit {
 
-  constructor() { }
+  allTasks: any[] = [];
 
-  ngOnInit(): void {
+
+  constructor(private fTask : FireTaskService) { }
+
+  ngOnInit(): void
+  {
+    console.log("aaaaaaa");
+    this.fTask.readTasksGroup().then(data=>{
+      console.log("logggg: "+data)
+      this.allTasks = data;
+      console.log("logggg1: "+data)
+      console.log("logggg2: "+ this.allTasks)
+    });
   }
+
+
 
 }

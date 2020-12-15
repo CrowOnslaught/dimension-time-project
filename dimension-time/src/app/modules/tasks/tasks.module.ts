@@ -12,10 +12,11 @@ import { GetUserTaskByIdPipe } from 'src/app/shared/pipes/get-user-task-by-id.pi
 import { TaskDialogComponent } from './components/task-dialog/task-dialog.component';
 import {  ReactiveFormsModule } from '@angular/forms';
 import { AddTaskDialogComponent } from './components/add-task-dialog/add-task-dialog.component';
+import { GetUserTaskByNamePipe } from 'src/app/shared/pipes/get-user-task-by-name.pipe';
 
 
 @NgModule({
-  declarations: [GetUserTaskByIdPipe, TaskIndividualComponent, TaskGroupComponent, TaskGroupPageComponent, TaskIndividualPageComponent, TaskDialogComponent, AddTaskDialogComponent],
+  declarations: [GetUserTaskByNamePipe, GetUserTaskByIdPipe, TaskIndividualComponent, TaskGroupComponent, TaskGroupPageComponent, TaskIndividualPageComponent, TaskDialogComponent, AddTaskDialogComponent],
   imports: [
     CommonModule,
     TasksRoutingModule,

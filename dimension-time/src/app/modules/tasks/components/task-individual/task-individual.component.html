@@ -1,12 +1,12 @@
 <div>
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput type='text' name="Filter" />
+    <input matInput type='text' name="Filter" #filter/>
   </mat-form-field>
-  <button mat-raised-button (click)="openModalAdd()">Add Task</button>
+  <button mat-raised-button color='accent' (click)="openModalAdd()">Add Task</button>
 </div>
 
-<mat-card *ngFor="let t of tasksByUser" class='task' [ngClass]="{'active': t.timeStart!=''}" (click)='openModal(t)'>
+<mat-card *ngFor="let t of tasksByUser | getUserTaskByName : filter.value  " class='task' [ngClass]="{'active': t.timeStart!=''}" (click)='openModal(t)'>
   <mat-card-header>
     <mat-card-title>{{t.name}}<span>{{t.duration}}h</span></mat-card-title>
   </mat-card-header>

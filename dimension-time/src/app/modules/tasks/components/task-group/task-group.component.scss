@@ -1,0 +1,33 @@
+mat-card::ng-deep.mat-card-header-text {
+  margin-left: 0;
+}
+
+.task
+{
+  border: lightblue solid 3px;
+  margin:20px;
+  width: fit-content;
+
+  &:hover
+  {
+    background-color: lightgray;
+  }
+
+  mat-card-title
+  {
+
+    >span
+    {
+      margin-left: 50px;
+      font-weight: normal;
+    }
+  }
+}
+.active{
+  border: rgb(16, 99, 16) solid 3px;
+}
+
+mat-form-field
+{
+  margin: 20px;
+}

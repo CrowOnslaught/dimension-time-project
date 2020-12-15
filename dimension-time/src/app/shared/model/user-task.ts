@@ -1,5 +1,5 @@
 export interface UserTask {
-  id:string,
+  userTaskId:string,
   userId:string,
   taskId:string,
   duration:number,

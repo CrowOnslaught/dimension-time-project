@@ -1,3 +1,4 @@
+import { UserTask } from 'src/app/shared/model/user-task';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -5,7 +6,6 @@ import { Observable, Subject } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { TasksModule } from 'src/app/modules/tasks';
 import { Task } from '../model/task';
-import { UserTask } from '../model/user-task';
 
 @Injectable({
   providedIn: 'root'
@@ -78,9 +78,10 @@ export class FireTaskService {
         else
           return;
 
-          this.afs.collectionGroup('user_task', ref => ref.where('userId', '==', emailID))
+          const l_user_taskTaskQuery =this.afs.collectionGroup('user_task', ref => ref.where('userId', '==', emailID))
           .valueChanges().subscribe(data =>
             {
+              console.log("important: "+JSON.stringify(data))
               let l_userTaskArray = data as UserTask[];
 
               for (let i =0; i< l_userTaskArray.length; i++)
@@ -102,7 +103,9 @@ export class FireTaskService {
                   userTaskArray.push(l_ut);
                   console.log(userTaskArray)
               }
+              l_user_taskTaskQuery.unsubscribe();
             })
+
         });
         return taskArray;
   }
@@ -112,7 +115,19 @@ export class FireTaskService {
     }
 
 
-  update(user: UserTask): Promise < void> {
-      return this.afs.collection<UserTask>('users').doc(user.id).update(user);
+  update(userTask: any) {
+    /*let userTask1 = {
+      userTaskId:"jioDFJWNVxLwyrlqHPrD",
+      duration:"08:00",
+      taskId:"1",
+      timeEnd:"",
+      timeStart:"",
+      userId:"jaume.garcia@student.bit.es"
+
+    }*/
+    console.log(userTask)
+   /*let itemDoc = this.afs.doc(`user_task/${userTask1.userTaskId}`)
+   itemDoc.update(userTask1);*/
+      return this.afs.collection<any>('user_task').doc(userTask.userTaskId).set(userTask);
     }
 }

@@ -26,7 +26,11 @@ export class TaskDialogComponent {
 
   save(){
     const timeStartControl = this.formGroup.get('timeStart');
+    const timeEndControl = this.formGroup.get('timeEnd');
+
     timeStartControl.enable();
+    timeEndControl.enable();
+
 
     this.dialogRef.close(this.formGroup.value);
   }

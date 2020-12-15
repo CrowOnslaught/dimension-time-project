@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, Subject } from 'rxjs';
-import { first, switchMap } from 'rxjs/operators';
+import { catchError, first, switchMap } from 'rxjs/operators';
 import { TasksModule } from 'src/app/modules/tasks';
 import { Task } from '../model/task';
 
@@ -67,6 +67,21 @@ export class FireTaskService {
     let userTaskArray: UserTask[] = [];
     let taskArray: Task[] = [];
 
+    try
+    {
+      let l_user = await this.afAuth.currentUser;
+      if(l_user != null)
+      {
+        const l_user_taskQuery = await this.afs.collectionGroup('user_task', (ref) =>
+          ref.where('duration', '!=', "00:00")).valueChanges().toPromise();
+
+        const l_taskQuery = await this.afs.collectionGroup('task').valueChanges().toPromise();
+      }
+    }
+    catch(e)
+    {
+      console.log(e);
+    }
     await this.afAuth.currentUser.then((data) => {
       if (data != null) {
         data.providerData.forEach(function (profile) {

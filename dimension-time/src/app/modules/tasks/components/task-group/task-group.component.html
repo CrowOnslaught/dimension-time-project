@@ -5,7 +5,7 @@
   </mat-form-field>
 </div>
 
-<mat-card *ngFor="let t of allTasks | getUserTaskByName : filter.value  " class='task' [ngClass]="{'active': t.timeStart!=''}" (click)='openModal(t)'>
+<mat-card *ngFor="let t of allTasks | getUserTaskByName : filter.value  " class='task' >
   <mat-card-header>
     <mat-card-title>{{t.name}}<span>{{t.duration}}h</span></mat-card-title>
   </mat-card-header>

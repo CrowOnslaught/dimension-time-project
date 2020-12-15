@@ -202,7 +202,9 @@ export class TaskIndividualComponent implements OnInit {
       case "addTime":
         let duration = this.tasksByUser.find(d=> d.userTaskId == data.userTaskId).duration;
         let dataTime = this.calculateTime(data);
-        let result = this.calcularString(dataTime,duration);
+        let result = this.calculateTimeIndividual(dataTime,duration)
+        //let result = this.calcularString(dataTime,duration);
+        result = this.transformString(result);
         data = Object.assign(data,{"duration":result});
         data.timeStart = "";
         data.timeEnd = "";
@@ -233,12 +235,11 @@ export class TaskIndividualComponent implements OnInit {
     ).catch(error=>console.log(""));
 
   }
-  calcularString(data,duration){
+  transformString(data){
     let dataTime = data.split(":");
-    let durationTime = duration.split(":");
 
-    let resultHours = Number(durationTime[0])+Number(dataTime[0]);
-    let resultMinutes = Number(durationTime[1])+Number(dataTime[1]);
+    let resultHours = Number(dataTime[0]);
+    let resultMinutes = Number(dataTime[1]);
     let  result;
     if(resultHours<10 && resultMinutes>=10){
       result = "0"+resultHours+":"+resultMinutes;
@@ -341,6 +342,48 @@ addTask(data){
     this.getTasksByUser();
   });
 }
+
+
+calculateTimeIndividual(data,task){
+  let splitaStart = data.split(":");
+  let splitEnd = task.split(":");
+
+  let objMinuteStart = {hour: splitaStart[0],minute:splitaStart[1],second: 0};
+  let objMinuteEnd = {hour: splitEnd[0],minute:splitEnd[1],second: 0};
+
+console.log("data: "+splitaStart)
+console.log("data: "+splitEnd[0])
+
+  let timeCompare = this.calculateHours(objMinuteStart,objMinuteEnd);
+  console.log("timeCompare: "+timeCompare)
+
+  return timeCompare;
+}
+calculateHours(objMinuteStart,objMinuteEnd){
+  let result;
+  let resultTime;
+  let date = new Date();
+
+  let  objDateStart=new Date(2020+'-'+ 1 +"-"+1+" "+objMinuteStart.hour +":" + objMinuteStart.minute + ":" + objMinuteStart.second + ".000Z");
+  let  objDateEnd=new Date(2020+'-'+ 1 +"-"+1+" "+objMinuteEnd.hour +":" + objMinuteEnd.minute + ":" + objMinuteEnd.second + ".000Z");
+  objDateStart.setHours(objDateStart.getHours());
+  objDateEnd.setHours(objDateEnd.getHours());
+
+      //restar
+      resultTime =objDateEnd.getTime()+ objDateStart.getTime();
+      date.setTime(resultTime);
+      console.log("date: "+date)
+
+
+
+  date.setHours(date.getHours()-1);
+  console.log("date.getHours()-1: "+date.getHours())
+
+  result = date.getHours()+":"+date.getMinutes()
+  console.log("result: "+result)
+  return  result;
+}
+
 
 }
 

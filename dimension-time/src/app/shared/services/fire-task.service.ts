@@ -61,52 +61,29 @@ export class FireTaskService {
   //   return taskArray;
   // }
 
-  async readTasksGroup():Promise<any[]>
+   readTasksGroup():Observable<any[]>
   {
     let emailID;
-    let userTaskArray: UserTask[] = [];
-    let taskArray: Task[] = [];
+    let taskArray: any[] = [];
 
-    await this.afAuth.currentUser.then((data) => {
-      if (data != null) {
-        data.providerData.forEach(function (profile) {
-          emailID = profile.email;
-        });
-      } else return;
 
-      const l_user_taskTaskQuery = this.afs
+      return  this.afs
       .collectionGroup('user_task', (ref) =>
         ref.where('duration', '!=', "00:00")
-      ).valueChanges()
-      .subscribe((data) => {
-        console.log('important: ' + JSON.stringify(data));
-        let l_userTaskArray = data as UserTask[];
+      ).valueChanges();
 
-        for (let i = 0; i < l_userTaskArray.length; i++) {
-          const l_ut = l_userTaskArray[i];
-          const l_taskQuery = this.afs
-            .collectionGroup('task', (ref) =>
-              ref.where('id', '==', l_ut.taskId)
-            )
-            .valueChanges()
-            .subscribe((d) => {
-              let l_tasks = d as Task[];
+  }
+  readSubTask():Observable<any[]>{
 
-              let l_task = l_tasks[0];
 
-              l_task = Object.assign(l_ut, l_task);
 
-              taskArray.push(l_task);
-              l_taskQuery.unsubscribe();
-            });
+    return  this.afs
+        .collectionGroup('task')
+        .valueChanges();
 
-          userTaskArray.push(l_ut);
-          console.log(userTaskArray);
-        }
-        l_user_taskTaskQuery.unsubscribe();
-      });
-  });
-  return taskArray;
+
+
+
   }
 
   async readTasks(): Promise<any[]> {

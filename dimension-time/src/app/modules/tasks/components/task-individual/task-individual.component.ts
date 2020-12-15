@@ -1,3 +1,5 @@
+import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
+import { Task } from 'src/app/shared/model/task';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,7 +16,8 @@ import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 export class TaskIndividualComponent implements OnInit {
 
   userTasks: UserTask[] = [];
-  tasks: any[] = [];
+  tasksByUser: any[] = [];
+  tasks:Task[] = [];
 
 
    //snackBar
@@ -25,12 +28,67 @@ export class TaskIndividualComponent implements OnInit {
 
   ngOnInit(): void
   {
-    this.getTasks();
+    this.getTasksByUser();
   }
+  add(){
+    console.log("asdsadasdasdasd")
+    this.getTask();
 
-  getTasks()
+  }
+  ngAfterContentInit(){
+    this.getTask();
+  }
+  controlTask(){
+    let tasks =[];
+    for (let i = 0; i < this.tasks.length; i++) {
+      let flag= false;
+
+      for (let k = 0; k < this.tasksByUser.length; k++) {
+        console.log("if: "+this.tasks[i].id + " "+this.tasksByUser[k].id)
+        if(this.tasks[i].id == this.tasksByUser[k].id){
+          flag=true;
+        }
+      }
+      if(!flag){
+        tasks.push(this.tasks[i]);
+      }
+    }
+    return tasks;
+  }
+  getTask(){
+    this.tasks =[];
+    this.fTask.read$().subscribe(data=>{
+      this.tasks =[];
+
+
+      for (let i = 0; i < data.length; i++) {
+        let flag= false;
+
+        for (let k = 0; k < this.tasksByUser.length; k++) {
+          console.log("if: "+data[i].id + " "+this.tasksByUser[k].id)
+          if(data[i].id == this.tasksByUser[k].id){
+            flag=true;
+          }
+        }
+        if(!flag){
+          this.tasks.push(data[i]);
+        }
+      }
+      console.log("sad");
+      console.log(this.tasks)
+    });
+  }
+  getTasksByUser()
   {
-    this.tasks = this.fTask.readTasks();
+    this.fTask.readTasks().then(data=>{
+      console.log("logggg: "+data)
+      this.tasksByUser = data;
+      console.log("logggg1: "+data)
+      console.log("logggg2: "+ this.tasksByUser)
+
+      this.getTask();
+    });
+
   }
 
   createForm(data):FormGroup{
@@ -59,12 +117,9 @@ export class TaskIndividualComponent implements OnInit {
 
       formgroup.get('timeStart').valueChanges
         .subscribe(timeStart => {
-          console.log("sadasd")
         if(timeStart !=""){
-          console.log("aaaaa")
           timeEndControl.enable()
         }else{
-          console.log("bbbbbbb")
 
           timeEndControl.disable()
           timeEndControl.setValue("");
@@ -87,10 +142,10 @@ export class TaskIndividualComponent implements OnInit {
 
   openModal(data)
   {
-
-    for (let index = 0; index < this.tasks.length; index++) {
-      if(data.id != this.tasks[index].id && this.tasks[index].timeStart != ""){
-        this.openSnackBar("Tienes una taska pendiente: " + this.tasks[index].name,"info");
+    this.getTask();
+    for (let index = 0; index < this.tasksByUser.length; index++) {
+      if(data.id != this.tasksByUser[index].id && this.tasksByUser[index].timeStart != ""){
+        this.openSnackBar("Tienes una taska pendiente: " + this.tasksByUser[index].name,"info");
         return
       }
     }
@@ -121,7 +176,6 @@ export class TaskIndividualComponent implements OnInit {
         this.updateTime(data,"addTime");
       }
     }
-    console.log(data);
   }
   createUserTask(data,dataModify){
     if(dataModify.duration == undefined){
@@ -138,27 +192,23 @@ export class TaskIndividualComponent implements OnInit {
     return userTask
   }
   updateTime(data,flag){
-    let objFind = this.tasks.find(data=> data.userTaskId == data.userTaskId);
+    let objFind = this.tasksByUser.find(data=> data.userTaskId == data.userTaskId);
     let userTaskObj;
 
     switch(flag){
       case "addTime":
-        console.log("addtime: "+JSON.stringify(data))
-        console.log(JSON.stringify(this.tasks.find(d=> d.userTaskId == data.userTaskId)))
-        let duration = this.tasks.find(d=> d.userTaskId == data.userTaskId).duration;
+        let duration = this.tasksByUser.find(d=> d.userTaskId == data.userTaskId).duration;
         let dataTime = this.calculateTime(data);
         let result = this.calcularString(dataTime,duration);
         data = Object.assign(data,{"duration":result});
         data.timeStart = "";
         data.timeEnd = "";
-        console.log("dataTime: "+ data.duration +"  "+data)
         userTaskObj = this.createUserTask(objFind,data);
 
         this.update(userTaskObj);
 
         break;
       case "update":
-         console.log(data);
         userTaskObj = this.createUserTask(objFind,data);
         this.update(userTaskObj);
         break;
@@ -170,21 +220,18 @@ export class TaskIndividualComponent implements OnInit {
 
     this.fTask.update(data)
     .then(data=>{
-      this.getTasks();
+      this.getTasksByUser();
     }
-    ).catch(error=>console.log(error));
+    ).catch(error=>console.log(""));
 
   }
   calcularString(data,duration){
-    console.log(JSON.stringify(data));
     let dataTime = data.split(":");
     let durationTime = duration.split(":");
 
     let resultHours = Number(durationTime[0])+Number(dataTime[0]);
-    console.log("resultHours:"+resultHours)
     let resultMinutes = Number(durationTime[1])+Number(dataTime[1]);
     let  result = resultHours+":"+resultMinutes;
-    console.log("string: "+ result)
     return result;
   }
 
@@ -213,8 +260,6 @@ export class TaskIndividualComponent implements OnInit {
 
     if((objDateStart.getTime() / 1000) < (objDateEnd.getTime() / 1000)){
         //restar
-        console.log(objDateStart.getHours());
-        console.log(objDateEnd.getHours());
         resultTime =objDateEnd.getTime()- objDateStart.getTime();
         date.setTime(resultTime);
 
@@ -230,6 +275,50 @@ export class TaskIndividualComponent implements OnInit {
     result = date.getHours()+":"+date.getMinutes()
     return  result;
  }
+
+ //Modal 2 add task
+ openModalAdd()
+ {
+
+   const dialogConfig = new MatDialogConfig();
+  let tasks = this.controlTask();
+   // this.formGroup.setValue(item);
+   // dialogConfig.disableClose = true;
+   dialogConfig.autoFocus = true;
+
+   dialogConfig.data = this.createFormAdd(tasks);
+
+
+   const dialogRef = this.dialog.open(AddTaskDialogComponent, dialogConfig);
+
+   dialogRef.afterClosed().subscribe(
+     data=> this.closeModalAdd(data))
+   }
+
+ closeModalAdd(data)
+ {
+   if(data!=null || data!=undefined){
+     this.addTask(data);
+   }
+ }
+
+ createFormAdd(tasks):FormGroup{
+
+  let formgroup = this.fb.group({
+    option:[""],
+    task:[tasks]
+  });
+
+
+      return formgroup;
+
+}
+
+addTask(data){
+  this.fTask.createUserTask(data).then(data=>{
+    this.getTasksByUser();
+  });
+}
 
 }
 

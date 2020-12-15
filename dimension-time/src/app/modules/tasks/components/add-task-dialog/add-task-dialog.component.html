@@ -1,0 +1,15 @@
+<form mat-dialog-content [formGroup]="formGroup">
+
+
+  <mat-form-field appearance="fill">
+    <mat-label>Select an option</mat-label>
+    <mat-select disableRipple formControlName="option" >
+      <mat-option *ngFor="let t of tasks" value="{{t.id}}">{{t.name}}</mat-option>
+
+    </mat-select>
+  </mat-form-field>
+</form>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Close</button>
+  <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions>

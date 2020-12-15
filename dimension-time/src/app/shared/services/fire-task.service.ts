@@ -61,13 +61,13 @@ export class FireTaskService {
   //   console.log(taskArray);
   //   return taskArray;
   // }
-  readTasks() :any[]
+ async readTasks() :Promise<any[]>
   {
     let emailID;
     let userTaskArray: UserTask[] = [];
     let taskArray: Task[] = [];
 
-    this.afAuth.currentUser.then(data =>
+    await this.afAuth.currentUser.then(data =>
       {
         if(data != null)
         {
@@ -129,5 +129,39 @@ export class FireTaskService {
    /*let itemDoc = this.afs.doc(`user_task/${userTask1.userTaskId}`)
    itemDoc.update(userTask1);*/
       return this.afs.collection<any>('user_task').doc(userTask.userTaskId).set(userTask);
+    }
+
+
+    read$():Observable<Task[]>{
+      return this.afs.collection<Task>('task').valueChanges();
+
+    }
+
+   async createUserTask(data): Promise<void> {
+      let userTask1
+      console.log("createUser:"+JSON.stringify(data));
+      await this.afAuth.currentUser.then(d =>
+        {
+          let emailID
+          if(d != null)
+          {
+            d.providerData.forEach(function (profile) {
+              emailID = profile.email;
+            });
+          }
+          else
+            return;
+
+             userTask1 = {
+              userTaskId:this.afs.createId(),
+              duration:"00:00",
+              taskId:data.option,
+              timeEnd:"",
+              timeStart:"",
+              userId:emailID
+            }
+            return this.afs.collection<any>('user_task').doc(userTask1.userTaskId).set(userTask1);
+
+      });
     }
 }

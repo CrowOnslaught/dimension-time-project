@@ -24,22 +24,23 @@ export class TaskGroupComponent implements OnInit {
           let obj = d.find((dFind) => tasks[i].taskId == dFind.id);
 
           t = Object.assign(t, obj);
-          let l_index= this.allTasks.findIndex(alltaskFind=>alltaskFind.id == t.id);
+          let l_index = this.allTasks.findIndex(
+            (alltaskFind) => alltaskFind.id == t.id
+          );
 
           if (l_index == -1) this.allTasks.push(t);
           else {
             this.allTasks[l_index].duration = this.transformString(
-              this.calculateTime(this.allTasks[l_index].duration, t.duration)
+              this.calculateTimeIndividual(this.allTasks[l_index].duration, t.duration)
             );
           }
-
         }
       });
     });
-
   }
 
-  calculateTime(data, task) {
+  /*calculateTime(data, task) {
+    console.log("")
     let splitaStart = data.split(':');
     let splitEnd = task.split(':');
 
@@ -50,9 +51,48 @@ export class TaskGroupComponent implements OnInit {
     };
     let objMinuteEnd = { hour: splitEnd[0], minute: splitEnd[1], second: 0 };
 
-    let timeCompare = this.compareHours(objMinuteStart, objMinuteEnd);
+    let timeCompare = this.calculateTimeIndividual(objMinuteStart, objMinuteEnd);
 
     return timeCompare;
+  }*/
+  calculateTimeIndividual(data,task){
+    let splitaStart = data.split(":");
+    let splitEnd = task.split(":");
+
+    let objMinuteStart = {hour: splitaStart[0],minute:splitaStart[1],second: 0};
+    let objMinuteEnd = {hour: 0,minute:splitEnd[1],second: 0};
+
+
+
+    let timeCompare = this.calculateHours(objMinuteStart,objMinuteEnd);
+    console.log("timeCompare: "+task);
+
+    let splitTimeCompare = timeCompare.split(":");
+    let hours = Number(splitEnd[0])+Number(splitTimeCompare[0]);
+    timeCompare = hours+":"+splitTimeCompare[1];
+
+    return timeCompare;
+  }
+  calculateHours(objMinuteStart,objMinuteEnd){
+    let result;
+    let resultTime;
+    let date = new Date();
+
+    let  objDateStart=new Date(2020+'-'+ 1 +"-"+1+" "+objMinuteStart.hour +":" + objMinuteStart.minute + ":" + objMinuteStart.second + ".000Z");
+    let  objDateEnd=new Date(2020+'-'+ 1 +"-"+1+" "+objMinuteEnd.hour +":" + objMinuteEnd.minute + ":" + objMinuteEnd.second + ".000Z");
+    objDateStart.setHours(objDateStart.getHours());
+    objDateEnd.setHours(objDateEnd.getHours());
+
+        //restar
+        resultTime =objDateEnd.getTime()+ objDateStart.getTime();
+        date.setTime(resultTime);
+
+
+
+    date.setHours(date.getHours()-1);
+
+    result = date.getHours()+":"+date.getMinutes()
+    return  result;
   }
   compareHours(objMinuteStart, objMinuteEnd) {
     let result;
@@ -60,33 +100,8 @@ export class TaskGroupComponent implements OnInit {
     let date = new Date();
 
     let objDateStart = new Date(
-      2020 +
-        '-' +
-        1 +
-        '-' +
-        1 +
-        ' ' +
-        objMinuteStart.hour +
-        ':' +
-        objMinuteStart.minute +
-        ':' +
-        objMinuteStart.second +
-        '.000Z'
-    );
-    let objDateEnd = new Date(
-      2020 +
-        '-' +
-        1 +
-        '-' +
-        1 +
-        ' ' +
-        objMinuteEnd.hour +
-        ':' +
-        objMinuteEnd.minute +
-        ':' +
-        objMinuteEnd.second +
-        '.000Z'
-    );
+      2020 +'-' +1 +'-' +1 +' ' +objMinuteStart.hour +':' +objMinuteStart.minute +':' +objMinuteStart.second +'.000Z');
+    let objDateEnd = new Date(2020 +'-' +1 +'-' +1 +' ' +objMinuteEnd.hour +':' +objMinuteEnd.minute +':' +objMinuteEnd.second +'.000Z');
     objDateStart.setHours(objDateStart.getHours());
     objDateEnd.setHours(objDateEnd.getHours());
 

@@ -34,6 +34,7 @@ export class TaskIndividualComponent implements OnInit {
     this.getTask();
 
   }
+
   ngAfterContentInit(){
     this.getTask();
   }
@@ -343,14 +344,22 @@ addTask(data){
 
 
 calculateTimeIndividual(data,task){
+  console.log("data: "+JSON.stringify(data));
+  console.log("task: "+JSON.stringify(task));
   let splitaStart = data.split(":");
   let splitEnd = task.split(":");
 
   let objMinuteStart = {hour: splitaStart[0],minute:splitaStart[1],second: 0};
-  let objMinuteEnd = {hour: splitEnd[0],minute:splitEnd[1],second: 0};
+  let objMinuteEnd = {hour: 0,minute:splitEnd[1],second: 0};
+
 
 
   let timeCompare = this.calculateHours(objMinuteStart,objMinuteEnd);
+  console.log("timeCompare: "+task);
+
+  let splitTimeCompare = timeCompare.split(":");
+  let hours = Number(splitEnd[0])+Number(splitTimeCompare[0]);
+  timeCompare = hours+":"+splitTimeCompare[1];
 
   return timeCompare;
 }

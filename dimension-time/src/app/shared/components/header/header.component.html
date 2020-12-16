@@ -1,10 +1,10 @@
 <mat-toolbar color='primary'>
   <img src="https://image.flaticon.com/icons/png/512/66/66163.png" alt="" srcset="">
   <div class='buttons'>
-    <button color='accent' mat-raised-button *ngIf="!isLogged" routerLink="/users/login"> LOGIN</button>
-    <button color='accent' mat-raised-button *ngIf="!isLogged" routerLink="/users/register"> REGISTER</button>
-    <button color='accent' mat-raised-button *ngIf="isLogged" routerLink="/tasks/individual"> SELF TASKS</button>
-    <button color='accent' mat-raised-button *ngIf="isLogged" routerLink="/tasks/group"> GROUP TASKS</button>
-    <button color='accent' mat-raised-button *ngIf="isLogged" (click)='logOut()'> LOGOUT</button>
+    <button  class="button" color='accent' mat-raised-button *ngIf="!isLogged" routerLink="/users/login"> LOGIN</button>
+    <button class="button" color='accent' mat-raised-button *ngIf="!isLogged" routerLink="/users/register"> REGISTER</button>
+    <button class="button" color='accent' mat-raised-button *ngIf="isLogged" routerLink="/tasks/individual"> SELF TASKS</button>
+    <button class="button" color='accent' mat-raised-button *ngIf="isLogged" routerLink="/tasks/group"> GROUP TASKS</button>
+    <button class="button" color='accent' mat-raised-button *ngIf="isLogged" (click)='logOut()'> LOGOUT</button>
   </div>
 </mat-toolbar>

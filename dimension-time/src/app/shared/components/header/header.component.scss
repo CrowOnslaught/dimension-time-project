@@ -10,9 +10,12 @@ mat-toolbar
   }
   >div.buttons
   {
+    .button{
+      padding: 0 0;
+    }
     >button:not(:last-child)
     {
-      margin-right: 20px;
+      margin-right: 1em;
     }
   }
 }

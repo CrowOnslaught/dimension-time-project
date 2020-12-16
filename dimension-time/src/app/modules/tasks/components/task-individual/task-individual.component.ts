@@ -344,8 +344,6 @@ addTask(data){
 
 
 calculateTimeIndividual(data,task){
-  console.log("data: "+JSON.stringify(data));
-  console.log("task: "+JSON.stringify(task));
   let splitaStart = data.split(":");
   let splitEnd = task.split(":");
 
@@ -355,7 +353,6 @@ calculateTimeIndividual(data,task){
 
 
   let timeCompare = this.calculateHours(objMinuteStart,objMinuteEnd);
-  console.log("timeCompare: "+task);
 
   let splitTimeCompare = timeCompare.split(":");
   let hours = Number(splitEnd[0])+Number(splitTimeCompare[0]);

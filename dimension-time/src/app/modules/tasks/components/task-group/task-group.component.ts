@@ -65,7 +65,6 @@ export class TaskGroupComponent implements OnInit {
 
 
     let timeCompare = this.calculateHours(objMinuteStart,objMinuteEnd);
-    console.log("timeCompare: "+task);
 
     let splitTimeCompare = timeCompare.split(":");
     let hours = Number(splitEnd[0])+Number(splitTimeCompare[0]);

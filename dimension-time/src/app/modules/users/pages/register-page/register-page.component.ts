@@ -47,7 +47,7 @@ export class RegisterPageComponent implements OnInit {
   }
 
   private buildForm() {
-    const minPassLength = 4;
+    const minPassLength = 6;
     this.formGroup = this.fb.group({
       name: ['', [
         Validators.required]],

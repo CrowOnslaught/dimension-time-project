@@ -17,31 +17,20 @@ export class FireAuthService {
       await this.afAuth.signInWithEmailAndPassword(user.email, user.password);
      return  await this.afAuth.currentUser;
 
-
-  //if (userfirebase != null) {
-    //console.log("------"+JSON.stringify(userfirebase))
-    //console.log("------"+userfirebase.uid)
-
-     /*userfirebase.providerData.forEach(function (profile) {
-      localStorage.setItem("name",profile.displayName);
-      console.log("Sign-in provider: " + profile.uid);
-      console.log("  Provider-specific UID: " + profile.uid);
-      console.log("  Name: " + profile.displayName);
-      console.log("  Email: " + profile.email);
-      console.log(profile)*/
-   // });
-
-
     } catch (error) {
       throw error;
 
     }
 
   }
-  logout(){
+  logout(flag){
     this.afAuth.signOut();
-    this.route.navigate(['/home']);
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+    if(flag){
+      this.route.navigate(['/home']);
 
+    }
 
   }
 
@@ -49,8 +38,9 @@ export class FireAuthService {
     try {
       await this.afAuth.createUserWithEmailAndPassword(user.email, user.password);
       const userfirebase= await this.afAuth.currentUser;
-
-      return userfirebase.updateProfile({displayName: user.name});
+      userfirebase.updateProfile({displayName: user.name});
+      this.logout(false);
+      return userfirebase;
 
     } catch (error) {
       throw error;

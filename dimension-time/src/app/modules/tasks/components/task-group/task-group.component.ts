@@ -15,7 +15,6 @@ export class TaskGroupComponent implements OnInit {
   ngOnInit(): void {
     this.fTask.readTasksGroup().subscribe((data) => {
       this.fTask.readSubTask().subscribe((d) => {
-        console.log('data:' + JSON.stringify(data));
         this.allTasks = [];
         let tasks = data;
         //let tasks = data.filter(dataT => d.find(dT=> dT.id==dataT.taskId).id == dataT.taskId);
@@ -33,43 +32,11 @@ export class TaskGroupComponent implements OnInit {
               this.calculateTime(this.allTasks[l_index].duration, t.duration)
             );
           }
-          /* let t = data[i];
-          let task= d.find(taskFilter=> data[i].taskId ==taskFilter.id);
-          t= Object.assign(t,task);
-          console.log("t:"+ JSON.stringify(t))
-          let l_index= this.allTasks.findIndex(alltaskFind=>alltaskFind.id == t.id);
-          console.log("l_index:"+ JSON.stringify(l_index))
-          if( l_index == -1)
-            this.allTasks.push(t);
-          else
-          {
-            this.allTasks[l_index].duration = this.transformString(this.calculateTime(this.allTasks[l_index].duration,t.duration));
-          }*/
+
         }
       });
     });
-    /*
-    this.fTask.readTasksGroup().then(data=>{
-      l_tasks = data;
-      console.log(l_tasks);
-    }).then
-    (data =>{
-      console.log(l_tasks);
-      console.log(l_tasks.length);
-      for (let i=0; i< l_tasks.length; i++)
-      {
-        console.log("aaaaaa");
-        let t = l_tasks[i];
-        let l_index= this.allTasks.indexOf(t);
-        console.log("index: " + l_index);
-        if( l_index == -1)
-          this.allTasks.push(t);
-        else
-        {
-          this.allTasks[l_index].duration += t.duration;
-        }
-      }
-    });*/
+
   }
 
   calculateTime(data, task) {

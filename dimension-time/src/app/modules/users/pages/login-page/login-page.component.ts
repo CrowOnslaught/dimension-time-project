@@ -35,12 +35,10 @@ export class LoginPageComponent implements OnInit {
   }
 
   login(user:User){
-    console.log(user);
     let response = this.fireAuthService.login(user);
     response.then(data=>{
       this.logCom.logIn(true);
       data.providerData.forEach(function (profile) {
-        console.log(profile.displayName);
         localStorage.setItem("name",profile.displayName);
         localStorage.setItem("email",profile.email);
       });
@@ -48,7 +46,6 @@ export class LoginPageComponent implements OnInit {
       this.route.navigate(['/home'])
     }).catch((error)=>{
       this.openSnackBar("Register Error","error");
-      console.log(error);
     });
   }
 

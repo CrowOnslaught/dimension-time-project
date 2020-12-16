@@ -24,13 +24,12 @@ export class HeaderComponent implements OnInit {
 
   click()
   {
-    this.fAuth.logout();
-    console.log('isLogged:' +this.isLogged);
+    this.fAuth.logout(true);
   }
   logOut()
   {
     this.logCom.logIn(false);
-    this.fAuth.logout();
+    this.fAuth.logout(true);
   }
 
   // ngOnDestroy():void{

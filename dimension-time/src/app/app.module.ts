@@ -1,3 +1,4 @@
+import { AuthGuard } from './shared/guards/auth.guard';
 import { environment } from './../environments/environment';
 import { HeaderModule } from './shared/components/header/header.module';
 import { HeroModule } from './shared/components/hero/hero.module';
@@ -31,7 +32,7 @@ import { GetUserTaskByNamePipe } from './shared/pipes/get-user-task-by-name.pipe
     AngularFirestoreModule,
     AngularFireAuthModule,
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

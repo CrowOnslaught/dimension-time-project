@@ -34,11 +34,11 @@ export class RegisterPageComponent implements OnInit {
   }
 
   register(user){
-    //console.log(user);
     let response = this.fireAuthService.register(user);
     response.then(data=>{
+      this.route.navigate(["/users/login"]);
       this.openSnackBar("Register Successful","successful");
-      console.log(data)})
+    })
       .catch((error) => {
         this.openSnackBar("Register Error","error");
 

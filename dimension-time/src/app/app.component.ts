@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
       {
         if(data != null)
           this.logCom.logIn(true);
-          this.router.navigate(['/home']);
       })
   }
 

@@ -31,7 +31,6 @@ export class TaskIndividualComponent implements OnInit {
     this.getTasksByUser();
   }
   add(){
-    console.log("asdsadasdasdasd")
     this.getTask();
 
   }
@@ -44,7 +43,6 @@ export class TaskIndividualComponent implements OnInit {
       let flag= false;
 
       for (let k = 0; k < this.tasksByUser.length; k++) {
-        console.log("if: "+this.tasks[i].id + " "+this.tasksByUser[k].id)
         if(this.tasks[i].id == this.tasksByUser[k].id){
           flag=true;
         }
@@ -65,7 +63,6 @@ export class TaskIndividualComponent implements OnInit {
         let flag= false;
 
         for (let k = 0; k < this.tasksByUser.length; k++) {
-          console.log("if: "+data[i].id + " "+this.tasksByUser[k].id)
           if(data[i].id == this.tasksByUser[k].id){
             flag=true;
           }
@@ -74,65 +71,33 @@ export class TaskIndividualComponent implements OnInit {
           this.tasks.push(data[i]);
         }
       }
-      console.log("sad");
-      console.log(this.tasks)
     });
   }
   getTasksByUser()
   {
     this.fTask.readTasks().subscribe(data=>{
-      console.log("readTasks:"+ JSON.stringify(data))
       this.fTask.readSubTask().subscribe(d=>{
         this.tasksByUser=[]
         let tasks = data;
         for (let i=0; i< tasks.length; i++)
         {
           let t = tasks[i]
-          console.log("d:"+ JSON.stringify(d))
-          console.log("tasks:"+ JSON.stringify(tasks))
 
 
           let obj = d.find(dFind=> tasks[i].taskId == dFind.id  )
-          console.log("obj:"+ JSON.stringify(obj))
 
           t= Object.assign(t,obj);
 
           this.tasksByUser.push(t);
 
-         /* let t = data[i];
-          console.log("t:"+ JSON.stringify(t))
-
-          let task= d.find(taskFilter=> tasks.find(tasksFind=>tasksFind.taskId == taskFilter.taskId));
-          console.log("find:"+ JSON.stringify(task))
-
-          t= Object.assign(t,task);
-          console.log("t1:"+ JSON.stringify(t))
-          let l_index= this.tasksByUser.findIndex(alltaskFind=>alltaskFind.id == t.id);
-
-          if( l_index == -1)
-            this.tasksByUser.push(t);
-          else
-          {
-           // this.tasksByUser[l_index].duration = this.transformString(this.calculateTime(this.tasksByUser[l_index].duration,t.tasksByUser));
-          }*/
         }
       })
     });
-    /*
-    this.fTask.readTasks().then(data=>{
-      console.log("logggg: "+data)
-      this.tasksByUser = data;
-      console.log("logggg1: "+data)
-      console.log("logggg2: "+ this.tasksByUser)
-
-      this.getTask();
-    });*/
 
   }
 
   createForm(data):FormGroup{
 
-    //data.timeStart = "19:25"
     let formgroup = this.fb.group({
       userTaskId:[data.userTaskId],
       name:[{value:data.name, disabled:true}],
@@ -181,7 +146,6 @@ export class TaskIndividualComponent implements OnInit {
 
   openModal(data)
   {
-    console.log("opendModal: "+JSON.stringify(data))
     this.getTask();
     for (let index = 0; index < this.tasksByUser.length; index++) {
       if(data.id != this.tasksByUser[index].id && this.tasksByUser[index].timeStart != ""){
@@ -189,11 +153,9 @@ export class TaskIndividualComponent implements OnInit {
         return
       }
     }
-    console.log("opendModal1: "+JSON.stringify(data))
     const dialogConfig = new MatDialogConfig();
 
-    // this.formGroup.setValue(item);
-    // dialogConfig.disableClose = true;
+
     dialogConfig.autoFocus = true;
 
     dialogConfig.data = this.createForm(data);
@@ -207,7 +169,6 @@ export class TaskIndividualComponent implements OnInit {
 
   closeModal(data)
   {
-    console.log("closeModal: "+JSON.stringify(data))
 
     if(data!=null || data!=undefined){
       if(data.timeStart !="" && data.timeEnd=="")
@@ -255,7 +216,6 @@ export class TaskIndividualComponent implements OnInit {
       case "update":
 
         userTaskObj = this.createUserTask(objFind,data);
-        console.log("update: "+JSON.stringify(userTaskObj))
 
         this.update(userTaskObj);
         break;
@@ -264,7 +224,6 @@ export class TaskIndividualComponent implements OnInit {
   }
 
   update(data){
-    console.log("update: "+JSON.stringify(data))
 
 
     this.fTask.update(data)
@@ -390,11 +349,8 @@ calculateTimeIndividual(data,task){
   let objMinuteStart = {hour: splitaStart[0],minute:splitaStart[1],second: 0};
   let objMinuteEnd = {hour: splitEnd[0],minute:splitEnd[1],second: 0};
 
-console.log("data: "+splitaStart)
-console.log("data: "+splitEnd[0])
 
   let timeCompare = this.calculateHours(objMinuteStart,objMinuteEnd);
-  console.log("timeCompare: "+timeCompare)
 
   return timeCompare;
 }
@@ -411,15 +367,12 @@ calculateHours(objMinuteStart,objMinuteEnd){
       //restar
       resultTime =objDateEnd.getTime()+ objDateStart.getTime();
       date.setTime(resultTime);
-      console.log("date: "+date)
 
 
 
   date.setHours(date.getHours()-1);
-  console.log("date.getHours()-1: "+date.getHours())
 
   result = date.getHours()+":"+date.getMinutes()
-  console.log("result: "+result)
   return  result;
 }
 

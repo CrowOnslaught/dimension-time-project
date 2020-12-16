@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
 
       if (user && user.uid) {
 
+
         if (url.toString().indexOf("users")!=-1) {
           this.router.navigate(['/home']);
 

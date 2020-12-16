@@ -10,7 +10,7 @@ export class LogComunicationService {
   constructor() { }
 
 
-  isLogged$() : BehaviorSubject<boolean>
+  isLogged$()
   {
     return this.isLogged;
   }

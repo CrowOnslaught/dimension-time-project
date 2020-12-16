@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {path:'home', component: HomePageComponent },
   {path:'', redirectTo:'home', pathMatch:'full' },
-  {path:'users',  loadChildren: () => import('./modules/users').then(m => m.UsersModule),  canActivate: [AuthGuard]},
+  {path:'users',  loadChildren: () => import('./modules/users').then(m => m.UsersModule),canActivate: [AuthGuard]},
   {path:'tasks',  loadChildren: () => import('./modules/tasks').then(m => m.TasksModule),canActivate: [AuthGuard]},
 ];
 

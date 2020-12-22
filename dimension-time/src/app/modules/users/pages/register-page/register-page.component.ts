@@ -26,7 +26,7 @@ export class RegisterPageComponent implements OnInit {
 
   openSnackBar(message: string, className: string){
     this._snackBar.open(message, '', {
-      duration: 800,
+      duration: 800000,
       panelClass: [className],
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
